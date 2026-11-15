@@ -101,6 +101,17 @@ public class Calendario extends AppCompatActivity {
         buildWeekdays();
         refreshCalendar();
         showSelectedDay();
+        DayReminderNotifications.requestPermissionAndSchedule(this);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == DayReminderNotifications.REQUEST_NOTIFICATIONS
+                && grantResults.length > 0
+                && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            DayReminderNotifications.scheduleNextReminder(this);
+        }
     }
 
     private void bindViews() {
@@ -411,6 +422,7 @@ public class Calendario extends AppCompatActivity {
             return;
         }
         entry.notes = note;
+        refreshCalendar();
         Toast.makeText(this, "Nota guardada", Toast.LENGTH_SHORT).show();
     }
 
@@ -437,7 +449,9 @@ public class Calendario extends AppCompatActivity {
         double stressRisk = (entry.stress - 1) / 9.0;
         double sleepRisk = Math.max(0, Math.min(1, (7.0 - entry.sleepHours) / 7.0));
         double mealRisk = Math.min(1, Math.abs(entry.meals - 3) / 3.0);
-        double risk = 0.65 * stressRisk + 0.25 * sleepRisk + 0.10 * mealRisk;
+        double metricsRisk = 0.65 * stressRisk + 0.25 * sleepRisk + 0.10 * mealRisk;
+        double notesAdjustment = -0.18 * NoteStressAnalyzer.sentiment(entry.notes);
+        double risk = Math.max(0, Math.min(1, metricsRisk + notesAdjustment));
         if (risk < 0.34) return Color.rgb(216, 242, 225);
         if (risk < 0.67) return Color.rgb(255, 239, 190);
         return Color.rgb(250, 213, 207);

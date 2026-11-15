@@ -84,6 +84,14 @@ public class CalendarioDatabase extends SQLiteOpenHelper {
         return entries;
     }
 
+    public boolean hasEntry(LocalDate date) {
+        SQLiteDatabase database = getReadableDatabase();
+        try (Cursor cursor = database.query(TABLE_ENTRIES, new String[]{COLUMN_DATE},
+                COLUMN_DATE + " = ?", new String[]{date.toString()}, null, null, null, "1")) {
+            return cursor.moveToFirst();
+        }
+    }
+
     public void saveEntry(LocalDate date, int stress, double sleepHours, int meals, String notes) {
         SQLiteDatabase database = getWritableDatabase();
         database.beginTransaction();
