@@ -216,7 +216,7 @@ public class Calendario extends AppCompatActivity {
 
     private void buildWeekdays() {
         weekdaysRow.removeAllViews();
-        String[] names = {"L", "M", "X", "J", "V", "S", "D"};
+        String[] names = {"L", "M", "I", "J", "V", "S", "D"};
         for (String name : names) {
             TextView day = new TextView(this);
             day.setLayoutParams(new LinearLayout.LayoutParams(0, dp(36), 1));
