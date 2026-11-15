@@ -5,7 +5,9 @@ import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +75,12 @@ public class Calendario extends AppCompatActivity {
     private TextView mealsEvaluation;
     private EditText notesEditText;
     private EditText logNotesEditText;
+    private EditText noteSearchInput;
     private TextView saveNotesButton;
+    private TextView infoSentimentTag;
+    private TextView logSentimentTag;
+    private TextView noteSearchButton;
+    private TextView noteSearchResult;
     private SeekBar stressSeekBar;
     private SeekBar sleepSeekBar;
     private TextView stressSeekValue;
@@ -133,7 +140,12 @@ public class Calendario extends AppCompatActivity {
         mealsEvaluation = findViewById(R.id.mealsEvaluation);
         notesEditText = findViewById(R.id.notesEditText);
         logNotesEditText = findViewById(R.id.logNotesEditText);
+        noteSearchInput = findViewById(R.id.noteSearchInput);
         saveNotesButton = findViewById(R.id.saveNotesButton);
+        infoSentimentTag = findViewById(R.id.infoSentimentTag);
+        logSentimentTag = findViewById(R.id.logSentimentTag);
+        noteSearchButton = findViewById(R.id.noteSearchButton);
+        noteSearchResult = findViewById(R.id.noteSearchResult);
         stressSeekBar = findViewById(R.id.stressSeekBar);
         sleepSeekBar = findViewById(R.id.sleepSeekBar);
         stressSeekValue = findViewById(R.id.stressSeekValue);
@@ -215,9 +227,98 @@ public class Calendario extends AppCompatActivity {
 
         findViewById(R.id.minusMeals).setOnClickListener(view -> updateMealCount(-1));
         findViewById(R.id.plusMeals).setOnClickListener(view -> updateMealCount(1));
+        addSentimentWatcher(notesEditText, infoSentimentTag);
+        addSentimentWatcher(logNotesEditText, logSentimentTag);
         editButton.setOnClickListener(view -> showEditor(entries.get(selectedDate)));
         saveEntryButton.setOnClickListener(view -> saveEntry());
         saveNotesButton.setOnClickListener(view -> saveNote());
+        noteSearchButton.setOnClickListener(view -> searchNotesForWord());
+        noteSearchInput.setOnEditorActionListener((view, actionId, event) -> {
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH) {
+                searchNotesForWord();
+                return true;
+            }
+            return false;
+        });
+    }
+
+    private void addSentimentWatcher(EditText field, TextView tag) {
+        field.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence text, int start, int count, int after) { }
+            @Override public void onTextChanged(CharSequence text, int start, int before, int count) {
+                updateSentimentTag(text.toString(), tag);
+            }
+            @Override public void afterTextChanged(Editable editable) { }
+        });
+        updateSentimentTag(field.getText().toString(), tag);
+    }
+
+    private void updateSentimentTag(String note, TextView tag) {
+        String label = NoteStressAnalyzer.sentimentLabel(note);
+        tag.setText(label);
+        int backgroundColor;
+        int textColor;
+        if (NoteStressAnalyzer.isPositiveLabel(label)) {
+            backgroundColor = Color.rgb(224, 244, 231);
+            textColor = Color.rgb(42, 133, 82);
+        } else if (label.equals("Neutral")) {
+            backgroundColor = Color.rgb(237, 243, 245);
+            textColor = Color.rgb(96, 119, 127);
+        } else {
+            backgroundColor = Color.rgb(253, 231, 226);
+            textColor = Color.rgb(188, 74, 65);
+        }
+        GradientDrawable chip = new GradientDrawable();
+        chip.setShape(GradientDrawable.RECTANGLE);
+        chip.setCornerRadius(dp(14));
+        chip.setColor(backgroundColor);
+        tag.setBackground(chip);
+        tag.setTextColor(textColor);
+    }
+
+    private void searchNotesForWord() {
+        String normalizedQuery = normalizeForSearch(noteSearchInput.getText().toString().trim());
+        String[] queryWords = normalizedQuery.split("[^a-z0-9]+");
+        if (queryWords.length != 1 || queryWords[0].isEmpty()) {
+            noteSearchResult.setText("Escribe una sola palabra para buscar.");
+            noteSearchResult.setVisibility(View.VISIBLE);
+            return;
+        }
+        String query = queryWords[0];
+
+        int matchingEntries = 0;
+        int stressTotal = 0;
+        for (DayEntry entry : entries.values()) {
+            if (containsWholeWord(entry.notes, query)) {
+                matchingEntries++;
+                stressTotal += entry.stress;
+            }
+        }
+
+        noteSearchResult.setVisibility(View.VISIBLE);
+        if (matchingEntries == 0) {
+            noteSearchResult.setText("No hay notas guardadas que contengan «"
+                    + noteSearchInput.getText().toString().trim() + "».");
+            return;
+        }
+        double meanStress = stressTotal / (double) matchingEntries;
+        noteSearchResult.setText(String.format(Locale.getDefault(),
+                "«%s» aparece en %d %s. Estrés medio autoinformado: %.1f / 10 (%s).",
+                noteSearchInput.getText().toString().trim(), matchingEntries,
+                matchingEntries == 1 ? "nota" : "notas", meanStress,
+                stressLabel((int) Math.round(meanStress))));
+    }
+
+    private boolean containsWholeWord(String note, String word) {
+        for (String token : normalizeForSearch(note).split("[^a-z0-9]+")) {
+            if (token.equals(word)) return true;
+        }
+        return false;
+    }
+
+    private String normalizeForSearch(String text) {
+        return java.text.Normalizer.normalize(text.toLowerCase(Locale.ROOT),
+                java.text.Normalizer.Form.NFD).replaceAll("\\p{M}+", "");
     }
 
     private void updateMealCount(int difference) {

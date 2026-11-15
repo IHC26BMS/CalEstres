@@ -25,4 +25,11 @@ public class NoteStressAnalyzerTest {
     public void negationReversesNearbySentiment() {
         assertTrue(NoteStressAnalyzer.sentiment("No estoy estresado") > 0);
     }
+
+    @Test
+    public void sentimentLabelIdentifiesEmotionInSpanishNotes() {
+        assertEquals("Frustrado", NoteStressAnalyzer.sentimentLabel("Me siento frustrado"));
+        assertEquals("Alegre", NoteStressAnalyzer.sentimentLabel("Hoy estoy feliz"));
+        assertEquals("Tranquilo", NoteStressAnalyzer.sentimentLabel("No estoy estresado"));
+    }
 }
