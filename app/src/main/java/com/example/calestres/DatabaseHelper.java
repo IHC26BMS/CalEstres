@@ -25,14 +25,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_TABLE = "CREATE TABLE " + TABLE_REGISTROS + " (" +
+        String createTable = "CREATE TABLE " + TABLE_REGISTROS + " (" +
                 COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL_FECHA + " TEXT UNIQUE, " +
+                COL_FECHA + " TEXT, " +
                 COL_SUENO + " REAL, " +
                 COL_COMIDAS + " INTEGER, " +
                 COL_ESTRES + " INTEGER, " +
                 COL_NOTA + " TEXT)";
-        db.execSQL(CREATE_TABLE);
+        db.execSQL(createTable);
     }
 
     @Override
@@ -41,7 +41,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Método para guardar o actualizar el registro diario (Baja Fricción)
     public boolean guardarRegistro(String fecha, float sueno, int comidas, int estres, String nota) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -51,19 +50,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COL_ESTRES, estres);
         values.put(COL_NOTA, nota);
 
-        long result = db.insertWithOnConflict(TABLE_REGISTROS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        long result = db.insert(TABLE_REGISTROS, null, values);
         return result != -1;
     }
 
-    // Método para consultar los datos de un día específico
     public Cursor obtenerRegistroPorFecha(String fecha) {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.query(TABLE_REGISTROS,
-                null,
-                COL_FECHA + " = ?",
-                new String[]{fecha},
-                null,
-                null,
-                null);
+        return db.rawQuery("SELECT * FROM " + TABLE_REGISTROS + " WHERE " + COL_FECHA + " = ?", new String[]{fecha});
+    }
+
+    public Cursor obtenerUltimoRegistro() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_REGISTROS + " ORDER BY " + COL_FECHA + " DESC LIMIT 1", null);
+    }
+
+    public Cursor obtenerPromediosPorPeriodo(int limiteDias) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT AVG(" + COL_SUENO + ") AS prom_sueno, " +
+                "AVG(" + COL_COMIDAS + ") AS prom_comidas, " +
+                "AVG(" + COL_ESTRES + ") AS prom_estres " +
+                "FROM (SELECT * FROM " + TABLE_REGISTROS + " ORDER BY " + COL_FECHA + " DESC LIMIT " + limiteDias + ")";
+        return db.rawQuery(query, null);
     }
 }
