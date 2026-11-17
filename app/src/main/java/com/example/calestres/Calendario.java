@@ -92,6 +92,7 @@ public class Calendario extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendario);
+        MenuInferior.configurar(this, 1);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.calendarioRoot), (view, insets) -> {
             Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             view.setPadding(bars.left, bars.top, bars.right, bars.bottom);

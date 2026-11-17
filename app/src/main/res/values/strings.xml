@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">CalEstres</string>
+    <string name="nav_home">Inicio</string>
+    <string name="nav_calendar">Calendario</string>
+    <string name="nav_exports">Exportar</string>
+    <string name="exports_title">Informes</string>
+    <string name="exports_description">Consulta tus métricas y crea un informe PDF con los registros guardados en el calendario.</string>
+    <string name="exports_period_label">Periodo del informe</string>
+    <string name="exports_preview_title">Resumen del periodo</string>
+    <string name="exports_loading">Cargando métricas…</string>
+    <string name="exports_create_pdf">Crear informe PDF</string>
+    <string-array name="export_periods">
+        <item>1 mes</item>
+        <item>3 meses</item>
+        <item>6 meses</item>
+        <item>1 año</item>
+    </string-array>
 </resources>

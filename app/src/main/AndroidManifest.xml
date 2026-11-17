@@ -31,6 +31,10 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
 
+        <activity
+            android:name=".Exportaciones"
+            android:exported="false" />
+
         <receiver
             android:name=".ReminderReceiver"
             android:enabled="true"
