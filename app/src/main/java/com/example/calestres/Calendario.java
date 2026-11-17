@@ -22,9 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -100,11 +97,7 @@ public class Calendario extends AppCompatActivity {
         YELLOW = getColor(R.color.metric_warning);
         RED = getColor(R.color.metric_danger);
         MenuInferior.configurar(this, 1);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.calendarioRoot), (view, insets) -> {
-            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            view.setPadding(bars.left, bars.top, bars.right, bars.bottom);
-            return insets;
-        });
+        ThemeMode.applySystemInsets(this, R.id.calendarioRoot);
 
         bindViews();
         database = new CalendarioDatabase(this);

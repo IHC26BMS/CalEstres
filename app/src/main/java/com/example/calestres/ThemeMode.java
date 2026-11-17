@@ -2,9 +2,13 @@ package com.example.calestres;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 final class ThemeMode {
     private static final String PREFERENCES = "cal_estres_settings";
@@ -32,6 +36,18 @@ final class ThemeMode {
                     ? AppCompatDelegate.MODE_NIGHT_YES
                     : AppCompatDelegate.MODE_NIGHT_NO);
         });
+    }
+
+    static void applySystemInsets(Activity activity, int rootId) {
+        View root = activity.findViewById(rootId);
+        ViewCompat.setOnApplyWindowInsetsListener(root, (view, insets) -> {
+            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            int topPadding = bars.top + Math.round(
+                    8 * activity.getResources().getDisplayMetrics().density);
+            view.setPadding(bars.left, topPadding, bars.right, bars.bottom);
+            return insets;
+        });
+        ViewCompat.requestApplyInsets(root);
     }
 
     private static boolean isDark(Context context) {

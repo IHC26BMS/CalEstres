@@ -1,23 +1,33 @@
 package com.example.calestres;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class MainActivity extends AppCompatActivity {
+    private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    private TextView txtMensajeAlerta, txtPromedios, txtUltimoRegistro;
+    private TextView txtMensajeAlerta;
+    private TextView txtPromedios;
+    private TextView txtUltimoRegistro;
     private RadioGroup rgPeriodo;
-    private DatabaseHelper dbHelper;
+    private CalendarioDatabase database;
+    private Map<LocalDate, CalendarioDatabase.Entry> registros;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ThemeMode.applySavedMode(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ThemeMode.applySystemInsets(this, R.id.mainRoot);
         MenuInferior.configurar(this, 0);
         ThemeMode.attach(this, R.id.btnThemeToggle);
 
@@ -26,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         txtUltimoRegistro = findViewById(R.id.txtUltimoRegistro);
         rgPeriodo = findViewById(R.id.rgPeriodo);
 
-        dbHelper = new DatabaseHelper(this);
+        database = new CalendarioDatabase(this);
+        registros = database.loadEntries();
 
         cargarUltimoDiaYDiagnostico();
         cargarPromedios(7);
@@ -43,55 +54,74 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void cargarUltimoDiaYDiagnostico() {
-        Cursor cursor = dbHelper.obtenerUltimoRegistro();
-
-        float sueno = 6.0f;
-        int comidas = 3;
-        int estres = 5;
-        String fecha = "Sin fecha";
-        String nota = "Aún no hay registros guardados";
-
-        if (cursor != null && cursor.moveToFirst()) {
-            fecha = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_FECHA));
-            sueno = cursor.getFloat(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_SUENO));
-            comidas = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_COMIDAS));
-            estres = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_ESTRES));
-            nota = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_NOTA));
-            cursor.close();
+        if (registros.isEmpty()) {
+            txtMensajeAlerta.setText("Aún no hay registros para generar un diagnóstico.");
+            txtUltimoRegistro.setText(
+                    "Registra un día en el calendario para ver aquí tus métricas.");
+            return;
         }
 
-        if (sueno < 5.0f && (estres > 7 || comidas <= 2)) {
-            txtMensajeAlerta.setText("⚠️ Alerta Preventiva: En tu último registro presentaste déficit de sueño (" + sueno + "h) y alto estrés (" + estres + "/10). ¡Prioriza descansar hoy!");
+        Map.Entry<LocalDate, CalendarioDatabase.Entry> ultimoRegistro =
+                new TreeMap<>(registros).lastEntry();
+        LocalDate fecha = ultimoRegistro.getKey();
+        CalendarioDatabase.Entry entry = ultimoRegistro.getValue();
+
+        if (entry.sleepHours < 5.0 && (entry.stress > 7 || entry.meals <= 2)) {
+            txtMensajeAlerta.setText(String.format(Locale.getDefault(),
+                    "⚠️ Alerta preventiva: el último registro muestra %.1f h de sueño, "
+                            + "%d/10 de estrés y %d comidas. Prioriza tu descanso y bienestar.",
+                    entry.sleepHours, entry.stress, entry.meals));
         } else {
-            txtMensajeAlerta.setText("✨ ¡Buen trabajo! Tus hábitos recientes de sueño (" + sueno + "h) y alimentación se mantienen en equilibrio con tu nivel de estrés (" + estres + "/10).");
+            txtMensajeAlerta.setText(String.format(Locale.getDefault(),
+                    "✨ Último registro: %.1f h de sueño, %d comidas y %d/10 de estrés.",
+                    entry.sleepHours, entry.meals, entry.stress));
         }
 
-        txtUltimoRegistro.setText("Fecha: " + fecha +
-                "\n• Horas de sueño: " + sueno + " h" +
-                "\n• Comidas en el día: " + comidas +
-                "\n• Nivel de estrés: " + estres + "/10" +
-                "\n• Nota: " + nota);
+        txtUltimoRegistro.setText(String.format(Locale.getDefault(),
+                "Fecha: %s\n• Horas de sueño: %.1f h\n• Comidas en el día: %d"
+                        + "\n• Nivel de estrés: %d/10\n• Nota: %s",
+                FORMATO_FECHA.format(fecha), entry.sleepHours, entry.meals, entry.stress,
+                entry.notes.isEmpty() ? "Sin nota" : entry.notes));
     }
 
     private void cargarPromedios(int dias) {
-        Cursor cursor = dbHelper.obtenerPromediosPorPeriodo(dias);
+        LocalDate hasta = LocalDate.now();
+        LocalDate desde = hasta.minusDays(dias - 1L);
+        int cantidad = 0;
+        double totalSueno = 0;
+        double totalComidas = 0;
+        double totalEstres = 0;
 
-        float promSueno = 6.0f;
-        float promComidas = 3.0f;
-        float promEstres = 5.0f;
-
-        if (cursor != null && cursor.moveToFirst()) {
-            if (!cursor.isNull(0)) {
-                promSueno = cursor.getFloat(0);
-                promComidas = cursor.getFloat(1);
-                promEstres = cursor.getFloat(2);
-            }
-            cursor.close();
+        for (Map.Entry<LocalDate, CalendarioDatabase.Entry> stored : registros.entrySet()) {
+            if (stored.getKey().isBefore(desde) || stored.getKey().isAfter(hasta)) continue;
+            CalendarioDatabase.Entry entry = stored.getValue();
+            totalSueno += entry.sleepHours;
+            totalComidas += entry.meals;
+            totalEstres += entry.stress;
+            cantidad++;
         }
 
-        String etiqueta = (dias == 7) ? "Últimos 7 días" : (dias == 30) ? "Últimos 30 días" : "Último año";
+        String etiqueta = (dias == 7) ? "Últimos 7 días"
+                : (dias == 30) ? "Últimos 30 días" : "Último año";
+        if (cantidad == 0) {
+            txtPromedios.setText("Periodo: " + etiqueta
+                    + "\nAún no hay registros guardados en este periodo.");
+            return;
+        }
+
         txtPromedios.setText(String.format(Locale.getDefault(),
-                "Periodo: %s\n• Promedio de sueño: %.1f horas\n• Promedio de comidas: %.1f al día\n• Promedio de estrés: %.1f / 10",
-                etiqueta, promSueno, promComidas, promEstres));
+                "Periodo: %s (%d registros)\n• Promedio de sueño: %.1f horas"
+                        + "\n• Promedio de comidas: %.1f al día"
+                        + "\n• Promedio de estrés: %.1f / 10",
+                etiqueta, cantidad, totalSueno / cantidad, totalComidas / cantidad,
+                totalEstres / cantidad));
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (database != null) {
+            database.close();
+        }
+        super.onDestroy();
     }
 }

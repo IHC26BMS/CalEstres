@@ -45,6 +45,7 @@ public class Exportaciones extends AppCompatActivity {
         ThemeMode.applySavedMode(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exportaciones);
+        ThemeMode.applySystemInsets(this, R.id.exportRoot);
         MenuInferior.configurar(this, 2);
         ThemeMode.attach(this, R.id.btnThemeToggle);
 
