@@ -14,13 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CalEstres">
+
         <activity
             android:name=".MainActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
-        <activity
-            android:name=".Calendario"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -28,6 +24,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".Calendario"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
+
         <receiver
             android:name=".ReminderReceiver"
             android:enabled="true"
@@ -37,10 +40,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <activity
-            android:name=".DiagnosticoActivity"
-            android:exported="true">
-        </activity>
+
     </application>
 
 </manifest>
