@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="screen_background">#10181B</color>
+    <color name="surface">#192326</color>
+    <color name="surface_elevated">#202C30</color>
+    <color name="surface_subtle">#222F33</color>
+    <color name="text_primary">#E8F1F3</color>
+    <color name="text_secondary">#C0CFD3</color>
+    <color name="text_muted">#A8B9BE</color>
+    <color name="text_hint">#93A6AC</color>
+    <color name="border">#34464C</color>
+    <color name="accent">#08717F</color>
+    <color name="accent_text">#63D5E3</color>
+    <color name="accent_foreground">#FFFFFF</color>
+    <color name="accent_selected">#63D5E3</color>
+    <color name="accent_highlight">#FFD180</color>
+    <color name="control_track">#40545A</color>
+    <color name="metric_good">#70D99A</color>
+    <color name="metric_warning">#F4C35F</color>
+    <color name="metric_danger">#FF887F</color>
+    <color name="calendar_future">#1D292D</color>
+    <color name="calendar_heat_low">#163A2C</color>
+    <color name="calendar_heat_medium">#4A3C18</color>
+    <color name="calendar_heat_high">#4A2927</color>
+    <color name="tag_positive_background">#183D2D</color>
+    <color name="tag_positive_text">#8CE0AD</color>
+    <color name="tag_neutral_background">#28383D</color>
+    <color name="tag_neutral_text">#C0CFD3</color>
+    <color name="tag_negative_background">#492B2A</color>
+    <color name="tag_negative_text">#FFAAA2</color>
+</resources>

@@ -15,9 +15,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeMode.applySavedMode(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         MenuInferior.configurar(this, 0);
+        ThemeMode.attach(this, R.id.btnThemeToggle);
 
         txtMensajeAlerta = findViewById(R.id.txtMensajeAlerta);
         txtPromedios = findViewById(R.id.txtPromedios);

@@ -1,6 +1,5 @@
 package com.example.calestres;
 
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.database.sqlite.SQLiteException;
@@ -42,12 +41,12 @@ public class Calendario extends AppCompatActivity {
     private static final String PREFERENCES = "cal_estres_entries";
     private static final String ENTRY_KEY = "entries";
     private static final Locale SPANISH = new Locale("es", "ES");
-    private static final int CYAN = Color.rgb(32, 167, 184);
-    private static final int DARK = Color.rgb(23, 59, 70);
-    private static final int MUTED = Color.rgb(113, 133, 140);
-    private static final int GREEN = Color.rgb(42, 159, 99);
-    private static final int YELLOW = Color.rgb(207, 145, 22);
-    private static final int RED = Color.rgb(207, 77, 77);
+    private int CYAN;
+    private int DARK;
+    private int MUTED;
+    private int GREEN;
+    private int YELLOW;
+    private int RED;
 
     private final Map<LocalDate, DayEntry> entries = new TreeMap<>();
     private CalendarioDatabase database;
@@ -90,8 +89,16 @@ public class Calendario extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeMode.applySavedMode(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendario);
+        ThemeMode.attach(this, R.id.btnThemeToggle);
+        CYAN = getColor(R.color.accent);
+        DARK = getColor(R.color.text_primary);
+        MUTED = getColor(R.color.text_muted);
+        GREEN = getColor(R.color.metric_good);
+        YELLOW = getColor(R.color.metric_warning);
+        RED = getColor(R.color.metric_danger);
         MenuInferior.configurar(this, 1);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.calendarioRoot), (view, insets) -> {
             Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -161,8 +168,8 @@ public class Calendario extends AppCompatActivity {
             monthNames.add(capitalize(YearMonth.of(2000, month).getMonth().getDisplayName(TextStyle.FULL, SPANISH)));
         }
         ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, monthNames);
-        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.layout.spinner_item, monthNames);
+        monthAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         monthSpinner.setAdapter(monthAdapter);
 
         int currentYear = LocalDate.now().getYear();
@@ -171,8 +178,8 @@ public class Calendario extends AppCompatActivity {
             years.add(year);
         }
         ArrayAdapter<Integer> yearAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, years);
-        yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.layout.spinner_item, years);
+        yearAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         yearSpinner.setAdapter(yearAdapter);
 
         changingSpinners = true;
@@ -260,14 +267,14 @@ public class Calendario extends AppCompatActivity {
         int backgroundColor;
         int textColor;
         if (NoteStressAnalyzer.isPositiveLabel(label)) {
-            backgroundColor = Color.rgb(224, 244, 231);
-            textColor = Color.rgb(42, 133, 82);
+            backgroundColor = getColor(R.color.tag_positive_background);
+            textColor = getColor(R.color.tag_positive_text);
         } else if (label.equals("Neutral")) {
-            backgroundColor = Color.rgb(237, 243, 245);
-            textColor = Color.rgb(96, 119, 127);
+            backgroundColor = getColor(R.color.tag_neutral_background);
+            textColor = getColor(R.color.tag_neutral_text);
         } else {
-            backgroundColor = Color.rgb(253, 231, 226);
-            textColor = Color.rgb(188, 74, 65);
+            backgroundColor = getColor(R.color.tag_negative_background);
+            textColor = getColor(R.color.tag_negative_text);
         }
         GradientDrawable chip = new GradientDrawable();
         chip.setShape(GradientDrawable.RECTANGLE);
@@ -384,7 +391,8 @@ public class Calendario extends AppCompatActivity {
                     number.setText(String.valueOf(dayNumber));
                     number.setTextSize(14);
                     number.setTypeface(null, isSelected || date.equals(today) ? Typeface.BOLD : Typeface.NORMAL);
-                    number.setTextColor(isSelected ? Color.WHITE : isFuture ? Color.rgb(183, 196, 200) : DARK);
+                    number.setTextColor(isSelected ? getColor(R.color.accent_foreground)
+                            : isFuture ? getColor(R.color.text_hint) : DARK);
                     dayCell.addView(number);
 
                     if (date.equals(nextDayToLog) && !isFuture) {
@@ -416,9 +424,9 @@ public class Calendario extends AppCompatActivity {
         } else if (entry != null) {
             background.setColor(heatColor(entry));
         } else if (future) {
-            background.setColor(Color.rgb(246, 249, 250));
+            background.setColor(getColor(R.color.calendar_future));
         } else {
-            background.setColor(Color.WHITE);
+            background.setColor(getColor(R.color.surface_elevated));
         }
         if (!selected && date.equals(LocalDate.now())) {
             background.setStroke(dp(1), CYAN);
@@ -554,27 +562,27 @@ public class Calendario extends AppCompatActivity {
         double metricsRisk = 0.65 * stressRisk + 0.25 * sleepRisk + 0.10 * mealRisk;
         double notesAdjustment = -0.18 * NoteStressAnalyzer.sentiment(entry.notes);
         double risk = Math.max(0, Math.min(1, metricsRisk + notesAdjustment));
-        if (risk < 0.34) return Color.rgb(216, 242, 225);
-        if (risk < 0.67) return Color.rgb(255, 239, 190);
-        return Color.rgb(250, 213, 207);
+        if (risk < 0.34) return getColor(R.color.calendar_heat_low);
+        if (risk < 0.67) return getColor(R.color.calendar_heat_medium);
+        return getColor(R.color.calendar_heat_high);
     }
 
     private int stressColor(int stress) {
-        if (stress <= 3) return Color.rgb(58, 174, 112);
-        if (stress <= 6) return Color.rgb(224, 166, 42);
-        return Color.rgb(213, 83, 75);
+        if (stress <= 3) return GREEN;
+        if (stress <= 6) return YELLOW;
+        return RED;
     }
 
     private int sleepColor(double hours) {
-        if (hours >= 7 && hours <= 9) return Color.rgb(58, 174, 112);
-        if ((hours >= 6 && hours < 7) || (hours > 9 && hours <= 10)) return Color.rgb(224, 166, 42);
-        return Color.rgb(213, 83, 75);
+        if (hours >= 7 && hours <= 9) return GREEN;
+        if ((hours >= 6 && hours < 7) || (hours > 9 && hours <= 10)) return YELLOW;
+        return RED;
     }
 
     private int mealsColor(int meals) {
-        if (meals == 3) return Color.rgb(58, 174, 112);
-        if (meals == 2 || meals == 4) return Color.rgb(224, 166, 42);
-        return Color.rgb(213, 83, 75);
+        if (meals == 3) return GREEN;
+        if (meals == 2 || meals == 4) return YELLOW;
+        return RED;
     }
 
     private String stressLabel(int stress) {

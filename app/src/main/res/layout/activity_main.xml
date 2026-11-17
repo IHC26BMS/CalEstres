@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212"
+    android:background="@color/screen_background"
     android:orientation="vertical">
 
     <ScrollView
@@ -19,13 +19,28 @@
 
         <TextView
             android:id="@+id/txtTituloDashboard"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
             android:text="Resumen General"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/text_primary"
             android:textSize="22sp"
             android:textStyle="bold"
+            android:gravity="center_vertical"
+            app:layout_constraintEnd_toStartOf="@id/btnThemeToggle"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/btnThemeToggle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:textColor="@color/text_primary"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Anuncio superior: Diagnóstico Preventivo -->
@@ -34,7 +49,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:cardBackgroundColor="#1E1E1E"
+            app:cardBackgroundColor="@color/surface"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="💡 Diagnóstico Preventivo"
-                    android:textColor="#FFB74D"
+                    android:textColor="@color/accent_highlight"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -61,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Evaluando tus hábitos recientes..."
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/text_primary"
                     android:textSize="15sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -72,7 +87,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:cardBackgroundColor="#1E1E1E"
+            app:cardBackgroundColor="@color/surface"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="📊 Promedio de Hábitos"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -107,7 +122,7 @@
                         android:layout_weight="1"
                         android:checked="true"
                         android:text="Semana"
-                        android:textColor="#FFFFFF" />
+                        android:textColor="@color/text_primary" />
 
                     <RadioButton
                         android:id="@+id/rbMes"
@@ -115,7 +130,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Mes"
-                        android:textColor="#FFFFFF" />
+                        android:textColor="@color/text_primary" />
 
                     <RadioButton
                         android:id="@+id/rbAnio"
@@ -123,7 +138,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Año"
-                        android:textColor="#FFFFFF" />
+                        android:textColor="@color/text_primary" />
                 </RadioGroup>
 
                 <TextView
@@ -132,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="Cargando métricas..."
-                    android:textColor="#B0BEC5"
+                    android:textColor="@color/text_secondary"
                     android:textSize="15sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -143,7 +158,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:cardBackgroundColor="#1E1E1E"
+            app:cardBackgroundColor="@color/surface"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -160,7 +175,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="📅 Último Día Registrado"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -170,7 +185,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Cargando último registro..."
-                    android:textColor="#B0BEC5"
+                    android:textColor="@color/text_secondary"
                     android:textSize="14sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>

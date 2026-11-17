@@ -3,6 +3,8 @@
     <string name="nav_home">Inicio</string>
     <string name="nav_calendar">Calendario</string>
     <string name="nav_exports">Exportar</string>
+    <string name="theme_switch_to_light">Cambiar a modo claro</string>
+    <string name="theme_switch_to_dark">Cambiar a modo oscuro</string>
     <string name="exports_title">Informes</string>
     <string name="exports_description">Consulta tus métricas y crea un informe PDF con los registros guardados en el calendario.</string>
     <string name="exports_period_label">Periodo del informe</string>

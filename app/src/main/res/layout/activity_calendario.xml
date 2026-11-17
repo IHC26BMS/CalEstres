@@ -4,14 +4,14 @@
     android:id="@+id/calendarioRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F8FA"
+    android:background="@color/screen_background"
     android:orientation="vertical"
     tools:context=".Calendario">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="@color/surface"
         android:elevation="3dp"
         android:gravity="center_vertical"
         android:orientation="vertical"
@@ -20,14 +20,33 @@
         android:paddingEnd="20dp"
         android:paddingBottom="12dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="CAL·ESTRÉS"
-            android:textColor="#63808A"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            android:letterSpacing="0.12" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:letterSpacing="0.12"
+                android:text="CAL·ESTRÉS"
+                android:textColor="@color/text_muted"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/btnThemeToggle"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:textColor="@color/text_primary"
+                android:textSize="24sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,7 +60,8 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1.4"
-                android:backgroundTint="#29AFC0"
+                android:backgroundTint="@color/accent"
+                android:popupBackground="@color/surface"
                 android:spinnerMode="dropdown" />
 
             <Spinner
@@ -50,7 +70,8 @@
                 android:layout_height="48dp"
                 android:layout_marginStart="12dp"
                 android:layout_weight="1"
-                android:backgroundTint="#29AFC0"
+                android:backgroundTint="@color/accent"
+                android:popupBackground="@color/surface"
                 android:spinnerMode="dropdown" />
         </LinearLayout>
     </LinearLayout>
@@ -85,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Tu calendario"
-                    android:textColor="#173B46"
+                    android:textColor="@color/text_primary"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -94,7 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="● Estrés bajo   ● medio   ● alto"
-                    android:textColor="#68818A"
+                    android:textColor="@color/text_muted"
                     android:textSize="10sp" />
             </LinearLayout>
 
@@ -128,7 +149,7 @@
                 android:paddingTop="9dp"
                 android:paddingBottom="14dp"
                 android:text="Selecciona un día para consultar o registrar cómo te sentiste."
-                android:textColor="#71858C"
+                android:textColor="@color/text_muted"
                 android:textSize="12sp" />
 
             <LinearLayout
@@ -156,7 +177,7 @@
                             android:id="@+id/selectedDateTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="#173B46"
+                            android:textColor="@color/text_primary"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             tools:text="Miércoles, 14 de noviembre" />
@@ -166,7 +187,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingTop="3dp"
-                            android:textColor="#71858C"
+                            android:textColor="@color/text_muted"
                             android:textSize="12sp"
                             tools:text="Resumen de tu día" />
                     </LinearLayout>
@@ -182,7 +203,7 @@
                         android:paddingStart="12dp"
                         android:paddingEnd="4dp"
                         android:text="Editar"
-                        android:textColor="#168B9D"
+                        android:textColor="@color/accent_text"
                         android:textStyle="bold"
                         android:visibility="gone" />
                 </LinearLayout>
@@ -204,11 +225,11 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="#F3F8F9"
+                            android:background="@color/surface_subtle"
                             android:orientation="vertical"
                             android:padding="12dp">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="ESTRÉS" android:textColor="#71858C" android:textSize="10sp" android:textStyle="bold" />
-                            <TextView android:id="@+id/stressValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="5dp" android:textColor="#173B46" android:textSize="16sp" android:textStyle="bold" tools:text="6 / 10" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="ESTRÉS" android:textColor="@color/text_muted" android:textSize="10sp" android:textStyle="bold" />
+                            <TextView android:id="@+id/stressValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="5dp" android:textColor="@color/text_primary" android:textSize="16sp" android:textStyle="bold" tools:text="6 / 10" />
                             <TextView android:id="@+id/stressEvaluation" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="2dp" android:textSize="11sp" tools:text="Moderado" />
                         </LinearLayout>
 
@@ -217,11 +238,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_weight="1"
-                            android:background="#F3F8F9"
+                            android:background="@color/surface_subtle"
                             android:orientation="vertical"
                             android:padding="12dp">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SUEÑO" android:textColor="#71858C" android:textSize="10sp" android:textStyle="bold" />
-                            <TextView android:id="@+id/sleepValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="5dp" android:textColor="#173B46" android:textSize="16sp" android:textStyle="bold" tools:text="7.5 horas" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SUEÑO" android:textColor="@color/text_muted" android:textSize="10sp" android:textStyle="bold" />
+                            <TextView android:id="@+id/sleepValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="5dp" android:textColor="@color/text_primary" android:textSize="16sp" android:textStyle="bold" tools:text="7.5 horas" />
                             <TextView android:id="@+id/sleepEvaluation" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="2dp" android:textSize="11sp" tools:text="Suficiente" />
                         </LinearLayout>
 
@@ -230,11 +251,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_weight="1"
-                            android:background="#F3F8F9"
+                            android:background="@color/surface_subtle"
                             android:orientation="vertical"
                             android:padding="12dp">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="COMIDAS" android:textColor="#71858C" android:textSize="10sp" android:textStyle="bold" />
-                            <TextView android:id="@+id/mealsValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="5dp" android:textColor="#173B46" android:textSize="16sp" android:textStyle="bold" tools:text="3 comidas" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="COMIDAS" android:textColor="@color/text_muted" android:textSize="10sp" android:textStyle="bold" />
+                            <TextView android:id="@+id/mealsValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="5dp" android:textColor="@color/text_primary" android:textSize="16sp" android:textStyle="bold" tools:text="3 comidas" />
                             <TextView android:id="@+id/mealsEvaluation" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="2dp" android:textSize="11sp" tools:text="Equilibrado" />
                         </LinearLayout>
                     </LinearLayout>
@@ -250,7 +271,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="NOTAS DEL DÍA"
-                            android:textColor="#71858C"
+                            android:textColor="@color/text_muted"
                             android:textSize="10sp"
                             android:textStyle="bold" />
                         <TextView
@@ -262,7 +283,7 @@
                             android:paddingStart="10dp"
                             android:paddingEnd="10dp"
                             android:text="Neutral"
-                            android:textColor="#168B9D"
+                            android:textColor="@color/accent_text"
                             android:textSize="11sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -277,8 +298,8 @@
                         android:inputType="textCapSentences|textMultiLine"
                         android:minHeight="82dp"
                         android:padding="12dp"
-                        android:textColor="#24444D"
-                        android:textColorHint="#9AAEB4"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_hint"
                         android:textSize="14sp" />
 
                     <TextView
@@ -292,7 +313,7 @@
                         android:paddingStart="12dp"
                         android:paddingEnd="4dp"
                         android:text="Guardar nota"
-                        android:textColor="#168B9D"
+                        android:textColor="@color/accent_text"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -309,8 +330,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Nivel de estrés" android:textColor="#35545D" android:textSize="14sp" android:textStyle="bold" />
-                        <TextView android:id="@+id/stressSeekValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="5 / 10" android:textColor="#168B9D" android:textStyle="bold" />
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Nivel de estrés" android:textColor="@color/text_secondary" android:textSize="14sp" android:textStyle="bold" />
+                        <TextView android:id="@+id/stressSeekValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="5 / 10" android:textColor="@color/accent_text" android:textStyle="bold" />
                     </LinearLayout>
                     <SeekBar
                         android:id="@+id/stressSeekBar"
@@ -318,17 +339,17 @@
                         android:layout_height="42dp"
                         android:max="9"
                         android:progress="4"
-                        android:progressTint="#F4B942"
-                        android:thumbTint="#F4B942"
-                        android:progressBackgroundTint="#DDE8EB" />
+                        android:progressTint="@color/metric_warning"
+                        android:thumbTint="@color/metric_warning"
+                        android:progressBackgroundTint="@color/control_track" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Horas de sueño" android:textColor="#35545D" android:textSize="14sp" android:textStyle="bold" />
-                        <TextView android:id="@+id/sleepSeekValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="7.0 horas" android:textColor="#168B9D" android:textStyle="bold" />
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Horas de sueño" android:textColor="@color/text_secondary" android:textSize="14sp" android:textStyle="bold" />
+                        <TextView android:id="@+id/sleepSeekValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="7.0 horas" android:textColor="@color/accent_text" android:textStyle="bold" />
                     </LinearLayout>
                     <SeekBar
                         android:id="@+id/sleepSeekBar"
@@ -336,19 +357,19 @@
                         android:layout_height="42dp"
                         android:max="120"
                         android:progress="70"
-                        android:progressTint="#45B879"
-                        android:thumbTint="#45B879"
-                        android:progressBackgroundTint="#DDE8EB" />
+                        android:progressTint="@color/metric_good"
+                        android:thumbTint="@color/metric_good"
+                        android:progressBackgroundTint="@color/control_track" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="54dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Número de comidas" android:textColor="#35545D" android:textSize="14sp" android:textStyle="bold" />
-                        <TextView android:id="@+id/minusMeals" android:layout_width="42dp" android:layout_height="42dp" android:background="@drawable/counter_button_background" android:clickable="true" android:focusable="true" android:gravity="center" android:text="−" android:textColor="#168B9D" android:textSize="24sp" />
-                        <TextView android:id="@+id/mealCount" android:layout_width="48dp" android:layout_height="wrap_content" android:gravity="center" android:text="3" android:textColor="#173B46" android:textSize="17sp" android:textStyle="bold" />
-                        <TextView android:id="@+id/plusMeals" android:layout_width="42dp" android:layout_height="42dp" android:background="@drawable/counter_button_background" android:clickable="true" android:focusable="true" android:gravity="center" android:text="+" android:textColor="#168B9D" android:textSize="22sp" />
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Número de comidas" android:textColor="@color/text_secondary" android:textSize="14sp" android:textStyle="bold" />
+                        <TextView android:id="@+id/minusMeals" android:layout_width="42dp" android:layout_height="42dp" android:background="@drawable/counter_button_background" android:clickable="true" android:focusable="true" android:gravity="center" android:text="−" android:textColor="@color/accent_text" android:textSize="24sp" />
+                        <TextView android:id="@+id/mealCount" android:layout_width="48dp" android:layout_height="wrap_content" android:gravity="center" android:text="3" android:textColor="@color/text_primary" android:textSize="17sp" android:textStyle="bold" />
+                        <TextView android:id="@+id/plusMeals" android:layout_width="42dp" android:layout_height="42dp" android:background="@drawable/counter_button_background" android:clickable="true" android:focusable="true" android:gravity="center" android:text="+" android:textColor="@color/accent_text" android:textSize="22sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -362,7 +383,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="NOTAS DEL DÍA"
-                            android:textColor="#71858C"
+                            android:textColor="@color/text_muted"
                             android:textSize="10sp"
                             android:textStyle="bold" />
                         <TextView
@@ -374,7 +395,7 @@
                             android:paddingStart="10dp"
                             android:paddingEnd="10dp"
                             android:text="Neutral"
-                            android:textColor="#168B9D"
+                            android:textColor="@color/accent_text"
                             android:textSize="11sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -388,8 +409,8 @@
                         android:inputType="textCapSentences|textMultiLine"
                         android:minHeight="72dp"
                         android:padding="12dp"
-                        android:textColor="#24444D"
-                        android:textColorHint="#9AAEB4"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_hint"
                         android:textSize="14sp" />
 
                     <ImageButton
@@ -401,7 +422,7 @@
                         android:background="@drawable/save_button_background"
                         android:contentDescription="Guardar registro del día"
                         android:src="@android:drawable/ic_menu_save"
-                        android:tint="#FFFFFF" />
+                        android:tint="@color/accent_foreground" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -418,7 +439,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Explorar tus notas"
-                    android:textColor="#173B46"
+                    android:textColor="@color/text_primary"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
@@ -427,7 +448,7 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="3dp"
                     android:text="Busca una palabra y consulta el estrés medio de esos días."
-                    android:textColor="#71858C"
+                    android:textColor="@color/text_muted"
                     android:textSize="12sp" />
 
                 <LinearLayout
@@ -449,8 +470,8 @@
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
                         android:singleLine="true"
-                        android:textColor="#24444D"
-                        android:textColorHint="#9AAEB4"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_hint"
                         android:textSize="14sp" />
 
                     <TextView
@@ -465,7 +486,7 @@
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
                         android:text="Buscar"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/accent_foreground"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -474,7 +495,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="12dp"
-                    android:textColor="#35545D"
+                    android:textColor="@color/text_secondary"
                     android:textSize="14sp"
                     android:visibility="gone" />
             </LinearLayout>

@@ -2,14 +2,10 @@ package com.example.calestres;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 
 final class MenuInferior {
-    private static final int COLOR_SELECCIONADO = Color.rgb(32, 167, 184);
-    private static final int COLOR_NORMAL = Color.rgb(113, 133, 140);
-
     private MenuInferior() {
     }
 
@@ -31,7 +27,8 @@ final class MenuInferior {
                                             Class<? extends Activity> destino) {
         boolean estaSeleccionado = posicion == seleccionada;
         elemento.setSelected(estaSeleccionado);
-        int color = estaSeleccionado ? COLOR_SELECCIONADO : COLOR_NORMAL;
+        int color = activity.getColor(estaSeleccionado
+                ? R.color.accent_selected : R.color.text_muted);
         ((TextView) activity.findViewById(etiquetaId)).setTextColor(color);
         View icono = activity.findViewById(iconoId);
         if (icono instanceof TextView) {

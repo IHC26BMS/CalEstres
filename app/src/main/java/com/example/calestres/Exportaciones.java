@@ -42,14 +42,22 @@ public class Exportaciones extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeMode.applySavedMode(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exportaciones);
         MenuInferior.configurar(this, 2);
+        ThemeMode.attach(this, R.id.btnThemeToggle);
 
         database = new CalendarioDatabase(this);
         selectorPeriodo = findViewById(R.id.spinnerPeriodoExportacion);
         resumen = findViewById(R.id.txtResumenExportacion);
         Button crearPdf = findViewById(R.id.btnCrearPdf);
+
+        String[] periodos = getResources().getStringArray(R.array.export_periods);
+        android.widget.ArrayAdapter<String> adapter = new android.widget.ArrayAdapter<>(
+                this, R.layout.spinner_item, periodos);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        selectorPeriodo.setAdapter(adapter);
 
         selectorPeriodo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
