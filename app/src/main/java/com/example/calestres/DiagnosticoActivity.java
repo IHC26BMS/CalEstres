@@ -43,9 +43,9 @@ public class DiagnosticoActivity extends AppCompatActivity {
 
         // Motor de Reglas Condicionales (Fase 1 / Proyecto Integrador)
         if (sueno < 5.0f && (estres > 7 || comidas <= 2)) {
-            txtMensajeAlerta.setText("⚠️ Alerta Preventiva: Tus registros indican déficit de sueño (" + sueno + "h) y alto estrés (" + estres + "). ¡Prioriza tu descanso hoy!");
+            txtMensajeAlerta.setText("Alerta Preventiva: Tus registros indican déficit de sueño (" + sueno + "h) y alto estrés (" + estres + "). ¡Prioriza tu descanso hoy!");
         } else {
-            txtMensajeAlerta.setText("✨ ¡Buen trabajo! Tus hábitos de sueño y alimentación se mantienen en equilibrio con tu nivel de estrés (" + estres + ").");
+            txtMensajeAlerta.setText("¡Buen trabajo! Tus hábitos de sueño y alimentación se mantienen en equilibrio con tu nivel de estrés (" + estres + ").");
         }
 
         txtResumenEstadistica.setText("Registro de hoy (" + fechaHoy + "):\n• Horas de sueño: " + sueno + "h\n• Comidas: " + comidas + "\n• Nivel de estrés: " + estres + "/10\n• Nota: " + nota);
