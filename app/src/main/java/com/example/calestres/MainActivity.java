@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             return "Aún no hay registros para valorar tu progreso." + aviso;
         }
 
-        LocalDate hoy = LocalDate.now();
+        LocalDate hoy = AppDateTime.today();
         PeriodMetrics recientes = resumirPeriodo(hoy.minusDays(6), hoy);
         if (recientes.cantidad < 3) {
             return "Seguimiento inicial\n"
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void cargarPromedios(int dias) {
-        LocalDate hasta = LocalDate.now();
+        LocalDate hasta = AppDateTime.today();
         LocalDate desde = hasta.minusDays(dias - 1L);
         int cantidad = 0;
         double totalSueno = 0;
