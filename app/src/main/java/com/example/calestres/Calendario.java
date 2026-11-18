@@ -102,8 +102,8 @@ public class Calendario extends AppCompatActivity {
         bindViews();
         database = new CalendarioDatabase(this);
         loadEntries();
-        visibleMonth = AppDateTime.currentMonth();
-        selectedDate = AppDateTime.today();
+        visibleMonth = AppDateTime.currentMonth(this);
+        selectedDate = AppDateTime.today(this);
         configureSpinners();
         configureEntryControls();
         buildWeekdays();
@@ -165,7 +165,7 @@ public class Calendario extends AppCompatActivity {
         monthAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         monthSpinner.setAdapter(monthAdapter);
 
-        int currentYear = AppDateTime.today().getYear();
+        int currentYear = AppDateTime.today(this).getYear();
         List<Integer> years = new ArrayList<>();
         for (int year = currentYear - 10; year <= currentYear + 2; year++) {
             years.add(year);
@@ -350,7 +350,7 @@ public class Calendario extends AppCompatActivity {
         int offset = firstOfMonth.getDayOfWeek().getValue() - DayOfWeek.MONDAY.getValue();
         int daysInMonth = visibleMonth.lengthOfMonth();
         int cellCount = ((offset + daysInMonth + 6) / 7) * 7;
-        LocalDate today = AppDateTime.today();
+        LocalDate today = AppDateTime.today(this);
 
         for (int start = 0; start < cellCount; start += 7) {
             LinearLayout row = new LinearLayout(this);
@@ -421,7 +421,7 @@ public class Calendario extends AppCompatActivity {
         } else {
             background.setColor(getColor(R.color.surface_elevated));
         }
-        if (!selected && date.equals(AppDateTime.today())) {
+        if (!selected && date.equals(AppDateTime.today(this))) {
             background.setStroke(dp(1), CYAN);
         }
         return background;
@@ -434,7 +434,7 @@ public class Calendario extends AppCompatActivity {
     }
 
     private void showSelectedDay() {
-        if (selectedDate == null || selectedDate.isAfter(AppDateTime.today())) {
+        if (selectedDate == null || selectedDate.isAfter(AppDateTime.today(this))) {
             entryCard.setVisibility(View.GONE);
             return;
         }
@@ -456,7 +456,7 @@ public class Calendario extends AppCompatActivity {
     }
 
     private void showEditor(DayEntry existing) {
-        if (selectedDate == null || selectedDate.isAfter(AppDateTime.today())) return;
+        if (selectedDate == null || selectedDate.isAfter(AppDateTime.today(this))) return;
         editButton.setVisibility(View.GONE);
         infoPanel.setVisibility(View.GONE);
         logPanel.setVisibility(View.VISIBLE);
@@ -496,7 +496,7 @@ public class Calendario extends AppCompatActivity {
     }
 
     private void saveEntry() {
-        if (selectedDate == null || selectedDate.isAfter(AppDateTime.today())) return;
+        if (selectedDate == null || selectedDate.isAfter(AppDateTime.today(this))) return;
         DayEntry entry = new DayEntry();
         entry.stress = stressSeekBar.getProgress() + 1;
         entry.sleepHours = sleepSeekBar.getProgress() / 10.0;
@@ -530,7 +530,7 @@ public class Calendario extends AppCompatActivity {
     }
 
     private void updateNextDayToLog() {
-        LocalDate today = AppDateTime.today();
+        LocalDate today = AppDateTime.today(this);
         if (entries.isEmpty()) {
             nextDayToLog = today;
             return;

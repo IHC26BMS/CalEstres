@@ -29,7 +29,7 @@ public class ReminderReceiver extends BroadcastReceiver {
             return;
         }
 
-        LocalDate yesterday = AppDateTime.today().minusDays(1);
+        LocalDate yesterday = AppDateTime.today(context).minusDays(1);
         CalendarioDatabase database = new CalendarioDatabase(context);
         boolean alreadyLogged;
         try {

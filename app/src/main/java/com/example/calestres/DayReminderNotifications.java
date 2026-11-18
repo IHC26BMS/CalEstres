@@ -38,7 +38,8 @@ public final class DayReminderNotifications {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarmManager == null) return;
 
-        Calendar next = Calendar.getInstance();
+        Calendar next = Calendar.getInstance(
+                java.util.TimeZone.getTimeZone(AppDateTime.zone(context)));
         next.set(Calendar.HOUR_OF_DAY, 10);
         next.set(Calendar.MINUTE, 0);
         next.set(Calendar.SECOND, 0);

@@ -76,7 +76,7 @@ public class Exportaciones extends AppCompatActivity {
 
     private void cargarResumen(int posicionPeriodo) {
         int meses = PERIODOS_MESES[posicionPeriodo];
-        LocalDate hasta = AppDateTime.today();
+        LocalDate hasta = AppDateTime.today(this);
         LocalDate desde = hasta.minusMonths(meses).plusDays(1);
         List<DailyEntry> registros = new ArrayList<>();
 
@@ -200,7 +200,7 @@ public class Exportaciones extends AppCompatActivity {
     }
 
     private String nombreArchivo() {
-        String fechaHora = AppDateTime.now()
+        String fechaHora = AppDateTime.now(this)
                 .format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss", Locale.getDefault()));
         return "CalEstres_" + fechaHora + ".pdf";
     }
